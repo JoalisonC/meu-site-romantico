@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Romântico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #a3a2d1;
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Chuva de corações */
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff4081;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Player do Spotify */
+        .spotify-player {
+            margin: 20px 0;
+            z-index: 2;
+            background: rgb(0, 47, 255);
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50x;
+            text-align: center;
+        }
+
+        .spotify-player h2 {
+            color: #1DB954;
+            margin-bottom: 10px;
+        }
+
+        /* Slideshow */
+        .slideshow-container {
+            position: relative;
+            max-width: 800px;
+            width: 90%;
+            margin: 20px auto;
+            z-index: 2;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .slide img:hover {
+            transform: scale(1.02);
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {opacity: .4}
+            to {opacity: 1}
+        }
+
+        /* Contador */
+        .countdown {
+            background: rgb(218, 218, 218);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            z-index: 2;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .countdown h2 {
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            margin: 10px;
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .time-label {
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chuva de corações -->
+    <div class="hearts" id="hearts"></div>
+
+    <!-- Player do Spotify -->
+    <div class="spotify-player">
+       <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2TE9rkhJYDctxgzak0AnSb?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+        <div class="slide fade">
+            <img src="Imagens/Meu amor 1.jpg" alt="Foto 1">
+        </div>
+
+        <div class="slide fade">
+            <img src="Imagens/Meu amor 2.jpg" alt="Foto 2">
+        </div>
+
+        <div class="slide fade">
+            <img src="Imagens/Meu amor 3.jpg" alt="Foto 3">
+        </div>
+        
+         <div class="slide fade">
+            <img src="Imagens/Meu amor 4.jpg" alt="Foto 3">
+        </div>
+
+         <div class="slide fade">
+            <img src="Imagens/Meu amor 5.jpg" alt="Foto 3">
+        </div>
+    </div>
+
+    <!-- Contador -->
+    <div class="countdown">
+        <h2>❤ Nosso Tempo Juntos ❤</h2>
+        <div class="timer">
+            <div class="time-unit">
+                <div class="time-value" id="years">0</div>
+                <div class="time-label">Anos</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="months">0</div>
+                <div class="time-label">Meses</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="days">0</div>
+                <div class="time-label">Dias</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="hours">0</div>
+                <div class="time-label">Horas</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="minutes">0</div>
+                <div class="time-label">Minutos</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="seconds">0</div>
+                <div class="time-label">Segundos</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chuva de corações
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartCount = 50;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤';
+                heart.classList.add('heart');
+                
+                // Posição aleatória
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = -20 + 'px';
+                
+                // Tamanho aleatório
+                const size = Math.random() * 20 + 10;
+                heart.style.fontSize = size + 'px';
+                
+                // Duração da animação aleatória
+                const duration = Math.random() * 5 + 5;
+                heart.style.animationDuration = duration + 's';
+                
+                // Atraso aleatório
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Slideshow
+        let slideIndex = 0;
+        
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            
+            slides[slideIndex-1].style.display = "block";  
+            setTimeout(showSlides, 3000); // Muda a cada 3 segundos
+        }
+
+        // Contador
+        function updateCountdown() {
+            // Defina a data de início do relacionamento (ano, mês-1, dia)
+            const startDate = new Date(2023, 8, 9); // 1 de janeiro de 2023 (mês é 0-indexed)
+            const now = new Date();
+            
+            const diff = now - startDate;
+            
+            // Calcula os valores
+            const seconds = Math.floor(diff / 1000) % 60;
+            const minutes = Math.floor(diff / (1000 * 60)) % 60;
+            const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30;
+            const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30)) % 12;
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            
+            // Atualiza a exibição
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('days').textContent = days;
+            document.getElementById('months').textContent = months;
+            document.getElementById('years').textContent = years;
+        }
+
+        // Inicializa tudo quando a página carrega
+        window.onload = function() {
+            createHearts();
+            showSlides();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        };
+    </script>
+</body>
+</html>
